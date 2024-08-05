@@ -85,7 +85,7 @@ const Dashboard = () => {
   return (
     <>
       <div id='dashboard-main'>
-        <Navbar />
+        {/* <Navbar /> */}
 
         <div className="sections">
           <div className="section1">
