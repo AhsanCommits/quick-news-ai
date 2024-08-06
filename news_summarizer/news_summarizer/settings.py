@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'endpoints',
-    'rest_framework'
+    'rest_framework',
+    'django_celery_results',
+    'django_celery_beat'
 ]
 
 MIDDLEWARE = [
@@ -113,6 +115,12 @@ USE_I18N = True
 
 USE_TZ = True
 
+CELERY_BROKER_URL =  'amqp://localhost'
+CELERY_ACCEPT_CONTENT  =  ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_RESULT_BACKEND = 'django-db'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -124,3 +132,13 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'endpoints.User'
+
+EMAIL_HOST = 'smtp.fastmail.com'
+EMAIL_HOST_USER = 'ammaryounas339@fastmail.com'
+EMAIL_HOST_PASSWORD = "7t445s844v2n8z9n"
+EMAIL_PORT = 465
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
