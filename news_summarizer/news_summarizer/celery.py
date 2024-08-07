@@ -4,22 +4,17 @@ import os
 from celery import Celery
 from django.conf import settings
 from celery.schedules import crontab
-
-
+from celery import shared_task
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'news_summarizer.settings')
 
 
 app = Celery('news_summarizer')
-app.conf.enable_utc = False
-app.conf.update(timezone = "Asia/Kolkata")
-app.conf.beat_schedule= {
-    'send-mail-everyday-at-8': {
-        'task': 'endpoints.tasks.send_mail_func',
-        'schedule': crontab(hour = 4, minute=1)
-    },
-}
+
+
 app.config_from_object('django.conf:settings', namespace='CELERY')
-app.autodiscover_tasks()
+
+
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 
 

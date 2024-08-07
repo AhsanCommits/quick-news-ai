@@ -58,7 +58,7 @@ def send_mail_func():
     api_key="api71-api-6cfa0f42-0cbf-46ce-b14f-43947f037f46",
     base_url="https://api.ai71.ai/v1/",)
     
-    users  =  User.objects.filter(is_staff=False, is_superuser=False,email = "ahsanraza00059@gmail.com")
+    users  =  User.objects.filter(is_staff=False, is_superuser=False)
     for user in users:
         print(f"Sending mail to {user.email} \n")
         interests = user.get_interests()

@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ALLOW_ALL_ORIGINS = True
+                
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',  # Add your frontend URL here
+]
 
 # Application definition
 
@@ -115,7 +120,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-CELERY_BROKER_URL =  'amqp://localhost'
+CELERY_BROKER_URL =  'redis://127.0.0.1:6379'
 CELERY_ACCEPT_CONTENT  =  ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
@@ -124,6 +129,7 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
+
 
 STATIC_URL = 'static/'
 
@@ -142,3 +148,9 @@ EMAIL_USE_SSL = True
 
 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers.DatabaseScheduler'
+CELERY_BEAT_SCHEDULE= {
+    'send-mail-everyday-at-8': {
+        'task': 'endpoints.tasks.send_mail_func',
+        'schedule': crontab(hour = 9, minute=25)
+    },
+}
